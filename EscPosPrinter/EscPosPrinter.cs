@@ -56,17 +56,13 @@ namespace EscPosPrinter
 
             string line = left + new string(' ', spaces) + right;
 
-            ApplyStyle(style);
-
-            _buffer.Add(_encoding.GetBytes(line + "\n"));
-
-            ResetStyle();
+            Write(line, Alignment.Left, style);
         }
 
         public void WriteSplitter(char sep = '-')
         {
             string line = new(sep, _columns);
-            _buffer.Add(_encoding.GetBytes(line + "\n"));
+            Write(line);
         }
 
         private void ApplyStyle(Style style)
