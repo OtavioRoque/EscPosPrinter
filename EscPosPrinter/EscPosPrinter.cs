@@ -54,6 +54,12 @@ namespace EscPosPrinter
             ResetStyle();
         }
 
+        public void WriteSplitter(char sep = '-')
+        {
+            string line = new string(sep, _columns);
+            _buffer.Add(_encoding.GetBytes(line + "\n"));
+        }
+
         private void ResetStyle()
         {
             _buffer.Add(new byte[] { 0x1B, 0x21, 0x00 });
