@@ -72,7 +72,7 @@ namespace EscPosPrinter
 
         private void ResetStyle()
         {
-            _buffer.Add([ESC, CMD_STYLE, (byte)Style.None]);
+            ApplyStyle(Style.None);
         }
 
         private void ApplyAlignment(Alignment alignment)
