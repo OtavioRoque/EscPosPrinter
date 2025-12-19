@@ -2,6 +2,8 @@
 
 namespace EscPosPrinter
 {
+    #region Enums
+
     public enum Alignment
     {
         Left = 0,
@@ -18,6 +20,8 @@ namespace EscPosPrinter
         DoubleWidth = 0x20,
         Underline = 0x80
     }
+
+    #endregion
 
     public class EscPosPrinter
     {
@@ -37,6 +41,8 @@ namespace EscPosPrinter
             _columns = columns;
             _buffer.Add([ESC, CMD_INIT]);
         }
+
+        #region Public Methods
 
         public void Write(string text, Style style = Style.None, Alignment alignment = Alignment.Left, bool lineBreak = true)
         {
@@ -65,6 +71,10 @@ namespace EscPosPrinter
             Write(line);
         }
 
+        #endregion
+
+        #region Private Methods
+
         private void ApplyStyle(Style style)
         {
             _buffer.Add([ESC, CMD_STYLE, (byte)style]);
@@ -79,5 +89,7 @@ namespace EscPosPrinter
         {
             _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
         }
+
+        #endregion
     }
 }
