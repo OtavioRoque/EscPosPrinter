@@ -39,7 +39,8 @@ namespace EscPosPrinter
         {
             _printerName = printerName;
             _columns = columns;
-            _buffer.Add([ESC, CMD_INIT]);
+
+            InitializePrinter();
         }
 
         #region Public Methods
@@ -74,6 +75,11 @@ namespace EscPosPrinter
         #endregion
 
         #region Private Methods
+
+        public void InitializePrinter()
+        {
+            _buffer.Add([ESC, CMD_INIT]);
+        }
 
         private void ApplyStyle(Style style)
         {
