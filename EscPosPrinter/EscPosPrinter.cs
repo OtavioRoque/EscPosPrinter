@@ -40,8 +40,8 @@ namespace EscPosPrinter
 
         public void Write(string text, Alignment alignment = Alignment.Left, Style style = Style.None, bool lineBreak = true)
         {
-            _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
-            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
+            ApplyAlignment(alignment);
+            ApplyStyle(style);
 
             _buffer.Add(_encoding.GetBytes(lineBreak ? text + "\n" : text));
 
@@ -56,7 +56,8 @@ namespace EscPosPrinter
 
             string line = left + new string(' ', spaces) + right;
 
-            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
+            ApplyStyle(style);
+
             _buffer.Add(_encoding.GetBytes(line + "\n"));
 
             ResetStyle();
@@ -68,9 +69,19 @@ namespace EscPosPrinter
             _buffer.Add(_encoding.GetBytes(line + "\n"));
         }
 
+        private void ApplyStyle(Style style)
+        {
+            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
+        }
+
         private void ResetStyle()
         {
             _buffer.Add([ESC, CMD_STYLE, (byte)Style.None]);
+        }
+
+        private void ApplyAlignment(Alignment alignment)
+        {
+            _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
         }
     }
 }
