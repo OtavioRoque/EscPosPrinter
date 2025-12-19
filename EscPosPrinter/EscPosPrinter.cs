@@ -38,33 +38,12 @@ namespace EscPosPrinter
             _buffer.Add([ESC, CMD_INIT]);
         }
 
-        public void Write(
-            string text,
-            Alignment alignment = Alignment.Left,
-            bool bold = false,
-            bool underline = false,
-            bool doubleHeight = false,
-            bool doubleWidth = false,
-            bool lineBreak = true)
+        public void Write(string text, Alignment alignment = Alignment.Left, Style style = Style.None, bool lineBreak = true)
         {
             _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
+            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
 
-            byte style = 0x00;
-            if (bold)
-                style |= 0x08;
-            if (underline)
-                style |= 0x80;
-            if (doubleHeight)
-                style |= 0x10;
-            if (doubleWidth)
-                style |= 0x20;
-
-            _buffer.Add([ESC, CMD_STYLE, style]);
-
-            if (lineBreak)
-                _buffer.Add(_encoding.GetBytes(text + "\n"));
-            else
-                _buffer.Add(_encoding.GetBytes(text));
+            _buffer.Add(_encoding.GetBytes(lineBreak ? text + "\n" : text));
 
             ResetStyle();
         }
@@ -77,7 +56,7 @@ namespace EscPosPrinter
 
         private void ResetStyle()
         {
-            _buffer.Add([ESC, CMD_STYLE, 0x00]);
+            _buffer.Add([ESC, CMD_STYLE, (byte)Style.None]);
         }
     }
 }
