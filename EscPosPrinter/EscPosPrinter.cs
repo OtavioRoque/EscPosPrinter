@@ -13,14 +13,14 @@ namespace EscPosPrinter
     {
         private readonly string _printerName;
         private readonly int _columns;
-        private readonly List<byte[]> _buffer = new();
+        private readonly List<byte[]> _buffer = [];
         private readonly Encoding _encoding = Encoding.GetEncoding(437);
 
         public EscPosPrinter(string printerName, int columns = 48)
         {
             _printerName = printerName;
             _columns = columns;
-            _buffer.Add(new byte[] { 0x1B, 0x40 });
+            _buffer.Add([0x1B, 0x40]);
         }
 
         public void Write(
@@ -32,7 +32,7 @@ namespace EscPosPrinter
             bool doubleWidth = false,
             bool lineBreak = true)
         {
-            _buffer.Add(new byte[] { 0x1B, 0x61, (byte)alignment });
+            _buffer.Add([0x1B, 0x61, (byte)alignment]);
 
             byte style = 0x00;
             if (bold)
@@ -44,7 +44,7 @@ namespace EscPosPrinter
             if (doubleWidth)
                 style |= 0x20;
 
-            _buffer.Add(new byte[] { 0x1B, 0x21, style });
+            _buffer.Add([0x1B, 0x21, style]);
 
             if (lineBreak)
                 _buffer.Add(_encoding.GetBytes(text + "\n"));
@@ -56,13 +56,13 @@ namespace EscPosPrinter
 
         public void WriteSplitter(char sep = '-')
         {
-            string line = new string(sep, _columns);
+            string line = new(sep, _columns);
             _buffer.Add(_encoding.GetBytes(line + "\n"));
         }
 
         private void ResetStyle()
         {
-            _buffer.Add(new byte[] { 0x1B, 0x21, 0x00 });
+            _buffer.Add([0x1B, 0x21, 0x00]);
         }
     }
 }
