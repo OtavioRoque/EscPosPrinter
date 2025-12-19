@@ -50,7 +50,7 @@ namespace EscPosPrinter
             ApplyAlignment(alignment);
             ApplyStyle(style);
 
-            _buffer.Add(_encoding.GetBytes(lineBreak ? text + "\n" : text));
+            SendCommand(_encoding.GetBytes(lineBreak ? text + "\n" : text));
 
             ResetStyle();
         }
@@ -76,14 +76,19 @@ namespace EscPosPrinter
 
         #region Private Methods
 
+        private void SendCommand(params byte[] cmd)
+        {
+            _buffer.Add(cmd);
+        }
+
         public void InitializePrinter()
         {
-            _buffer.Add([ESC, CMD_INIT]);
+            SendCommand(ESC, CMD_INIT);
         }
 
         private void ApplyStyle(Style style)
         {
-            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
+            SendCommand(ESC, CMD_STYLE, (byte)style);
         }
 
         private void ResetStyle()
@@ -93,7 +98,7 @@ namespace EscPosPrinter
 
         private void ApplyAlignment(Alignment alignment)
         {
-            _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
+            SendCommand(ESC, CMD_ALIGN, (byte)alignment);
         }
 
         #endregion
