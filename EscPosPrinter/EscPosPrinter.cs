@@ -48,6 +48,20 @@ namespace EscPosPrinter
             ResetStyle();
         }
 
+        public void WriteLeftRight(string left, string right, Style style = Style.None)
+        {
+            int spaces = _columns - left.Length - right.Length;
+            if (spaces < 1)
+                spaces = 1;
+
+            string line = left + new string(' ', spaces) + right;
+
+            _buffer.Add([ESC, CMD_STYLE, (byte)style]);
+            _buffer.Add(_encoding.GetBytes(line + "\n"));
+
+            ResetStyle();
+        }
+
         public void WriteSplitter(char sep = '-')
         {
             string line = new(sep, _columns);
