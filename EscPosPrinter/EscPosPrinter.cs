@@ -9,6 +9,16 @@ namespace EscPosPrinter
         Right = 2
     }
 
+    [Flags]
+    public enum Style : byte
+    {
+        None = 0x00,
+        Bold = 0x08,
+        DoubleHeight = 0x10,
+        DoubleWidth = 0x20,
+        Underline = 0x80
+    }
+
     public class EscPosPrinter
     {
         private const byte ESC = 0x1B;
