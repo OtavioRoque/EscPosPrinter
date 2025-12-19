@@ -38,7 +38,7 @@ namespace EscPosPrinter
             _buffer.Add([ESC, CMD_INIT]);
         }
 
-        public void Write(string text, Alignment alignment = Alignment.Left, Style style = Style.None, bool lineBreak = true)
+        public void Write(string text, Style style = Style.None, Alignment alignment = Alignment.Left, bool lineBreak = true)
         {
             ApplyAlignment(alignment);
             ApplyStyle(style);
@@ -56,7 +56,7 @@ namespace EscPosPrinter
 
             string line = left + new string(' ', spaces) + right;
 
-            Write(line, Alignment.Left, style);
+            Write(line, style);
         }
 
         public void WriteSplitter(char sep = '-')
