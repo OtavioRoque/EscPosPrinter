@@ -11,6 +11,11 @@ namespace EscPosPrinter
 
     public class EscPosPrinter
     {
+        private const byte ESC = 0x1B;
+        private const byte CMD_INIT = 0x40;
+        private const byte CMD_ALIGN = 0x61;
+        private const byte CMD_STYLE = 0x21;
+
         private readonly string _printerName;
         private readonly int _columns;
         private readonly List<byte[]> _buffer = [];
@@ -20,7 +25,7 @@ namespace EscPosPrinter
         {
             _printerName = printerName;
             _columns = columns;
-            _buffer.Add([0x1B, 0x40]);
+            _buffer.Add([ESC, CMD_INIT]);
         }
 
         public void Write(
@@ -32,7 +37,7 @@ namespace EscPosPrinter
             bool doubleWidth = false,
             bool lineBreak = true)
         {
-            _buffer.Add([0x1B, 0x61, (byte)alignment]);
+            _buffer.Add([ESC, CMD_ALIGN, (byte)alignment]);
 
             byte style = 0x00;
             if (bold)
@@ -44,7 +49,7 @@ namespace EscPosPrinter
             if (doubleWidth)
                 style |= 0x20;
 
-            _buffer.Add([0x1B, 0x21, style]);
+            _buffer.Add([ESC, CMD_STYLE, style]);
 
             if (lineBreak)
                 _buffer.Add(_encoding.GetBytes(text + "\n"));
@@ -62,7 +67,7 @@ namespace EscPosPrinter
 
         private void ResetStyle()
         {
-            _buffer.Add([0x1B, 0x21, 0x00]);
+            _buffer.Add([ESC, CMD_STYLE, 0x00]);
         }
     }
 }
