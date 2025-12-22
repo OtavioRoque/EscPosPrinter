@@ -29,6 +29,7 @@ namespace EscPosPrinter
         private const byte CMD_INIT = 0x40;
         private const byte CMD_ALIGN = 0x61;
         private const byte CMD_STYLE = 0x21;
+        private const byte LF = 0x0A;
 
         private readonly string _printerName;
         private readonly int _columns;
@@ -45,12 +46,15 @@ namespace EscPosPrinter
 
         #region Public Methods
 
-        public void Write(string text, Style style = Style.None, Alignment alignment = Alignment.Left, bool lineBreak = true)
+        public void Write(string text, Style style = Style.None, Alignment alignment = Alignment.Left, bool lineFeed = true)
         {
             ApplyAlignment(alignment);
             ApplyStyle(style);
 
-            SendCommand(_encoding.GetBytes(lineBreak ? text + "\n" : text));
+            SendCommand(_encoding.GetBytes(text));
+
+            if (lineFeed)
+                SendCommand(LF);
 
             ResetStyle();
         }
@@ -58,7 +62,7 @@ namespace EscPosPrinter
         public void WriteLeftRight(string left, string right, Style style = Style.None)
         {
             int spaces = _columns - left.Length - right.Length;
-            if (spaces < 1)
+            if (spaces < 1) 
                 spaces = 1;
 
             string line = left + new string(' ', spaces) + right;
