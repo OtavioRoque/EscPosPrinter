@@ -4,11 +4,11 @@ namespace EscPosPrinter
 {
     #region Enums
 
-    public enum Alignment
+    public enum Alignment : byte
     {
-        Left = 0,
-        Center = 1,
-        Right = 2
+        Left = 0x00,
+        Center = 0x01,
+        Right = 0x02
     }
 
     [Flags]
