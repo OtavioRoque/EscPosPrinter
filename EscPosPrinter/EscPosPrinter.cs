@@ -2,48 +2,6 @@
 
 namespace EscPosPrinter
 {
-    #region Enums
-
-    public enum Alignment : byte
-    {
-        Left = 0x00,
-        Center = 0x01,
-        Right = 0x02
-    }
-
-    [Flags]
-    public enum Style : byte
-    {
-        None = 0x00,
-        Bold = 0x08,
-        DoubleHeight = 0x10,
-        DoubleWidth = 0x20,
-        Underline = 0x80
-    }
-
-    public enum BarcodeWidth : byte
-    {
-        Narrow = 2,
-        Medium = 3,
-        Wide = 4
-    }
-
-    public enum BarcodeHeight : byte
-    {
-        Short = 60,
-        Medium = 120,
-        Tall = 180
-    }
-
-    public enum BarcodeHri : byte
-    {
-        None = 0x00,
-        Above = 0x01,
-        Below = 0x02
-    }
-
-    #endregion
-
     public class EscPosPrinter
     {
         private const byte ESC = 0x1B;
